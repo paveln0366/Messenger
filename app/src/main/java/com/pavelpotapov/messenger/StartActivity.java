@@ -53,6 +53,10 @@ public class StartActivity extends AppCompatActivity {
                         userPassword.getText().toString().trim());
             }
         });
+
+        if (auth.getCurrentUser() != null) {
+            startActivity(new Intent(StartActivity.this, ChatActivity.class));
+        }
     }
 
     private void enter(String email, String password) {
