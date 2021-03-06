@@ -13,4 +13,5 @@
     <string name="enter_your_email">Enter your email</string>
     <string name="small_password">Small password</string>
     <string name="enter_your_name">Enter your name</string>
+    <string name="no_name">No name</string>
 </resources>

@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -33,12 +35,18 @@ public class StartActivity extends AppCompatActivity {
 
     private boolean signInMode;
 
+    private FirebaseDatabase db;
+    private DatabaseReference dbRefUsers;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
         auth = FirebaseAuth.getInstance();
+        db = FirebaseDatabase.getInstance();
+        dbRefUsers = db.getReference().child("users");
+
         userEmail = findViewById(R.id.userEmail);
         userPassword = findViewById(R.id.userPassword);
         confirmPassword = findViewById(R.id.confirmPassword);
@@ -75,7 +83,9 @@ public class StartActivity extends AppCompatActivity {
                                     Log.d(TAG, "signInWithEmail:success");
                                     FirebaseUser user = auth.getCurrentUser();
                                     //updateUI(user);
-                                    startActivity(new Intent(StartActivity.this, ChatActivity.class));
+                                    Intent intent = new Intent(StartActivity.this, ChatActivity.class);
+                                    intent.putExtra("userName", userName.getText().toString().trim());
+                                    startActivity(intent);
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -108,8 +118,11 @@ public class StartActivity extends AppCompatActivity {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "createUserWithEmail:success");
                                     FirebaseUser user = auth.getCurrentUser();
+                                    createUser(user);
                                     //updateUI(user);
-                                    startActivity(new Intent(StartActivity.this, ChatActivity.class));
+                                    Intent intent = new Intent(StartActivity.this, ChatActivity.class);
+                                    intent.putExtra("userName", userName.getText().toString().trim());
+                                    startActivity(intent);
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -125,19 +138,28 @@ public class StartActivity extends AppCompatActivity {
         }
     }
 
+    private void createUser(FirebaseUser firebaseUser) {
+        User user = new User();
+        user.setId(firebaseUser.getUid());
+        user.setEmail(firebaseUser.getEmail());
+        user.setName(userName.getText().toString().trim());
+
+        dbRefUsers.push().setValue(user);
+    }
+
     public void switchMode(View view) {
         if (signInMode) {
             signInMode = false;
             enterButton.setText(getResources().getString(R.string.sign_up));
             switchTextView.setText(getResources().getString(R.string.sign_in));
             confirmPassword.setVisibility(View.VISIBLE);
-            userName.setVisibility(View.VISIBLE);
+            //userName.setVisibility(View.VISIBLE);
         } else {
             signInMode = true;
             enterButton.setText(getResources().getString(R.string.sign_in));
             switchTextView.setText(getResources().getString(R.string.sign_up));
             confirmPassword.setVisibility(View.INVISIBLE);
-            userName.setVisibility(View.INVISIBLE);
+            //userName.setVisibility(View.INVISIBLE);
         }
     }
 }
