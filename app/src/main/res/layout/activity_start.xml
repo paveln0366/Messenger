@@ -33,6 +33,14 @@
         android:layout_margin="@dimen/margin_standard"/>
 
     <EditText
+        android:id="@+id/confirmPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:hint="@string/confirm_password"
+        android:layout_margin="@dimen/margin_standard"/>
+
+    <EditText
         android:id="@+id/userName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,11 +57,12 @@
         android:text="@string/sign_up" />
 
     <TextView
-        android:id="@+id/toggleTextView"
+        android:id="@+id/switchTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sign_in"
         android:layout_gravity="center_horizontal"
         android:layout_margin="@dimen/margin_standard"
-        android:clickable="true"/>
+        android:clickable="true"
+        android:onClick="switchMode"/>
 </androidx.appcompat.widget.LinearLayoutCompat>
