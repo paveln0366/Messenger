@@ -4,14 +4,16 @@ public class User {
     private String name;
     private String email;
     private String id;
+    private int avatarMockUp;
 
     public User() {
     }
 
-    public User(String name, String email, String id) {
+    public User(String name, String email, String id, int avatarMockUp) {
         this.name = name;
         this.email = email;
         this.id = id;
+        this.avatarMockUp = avatarMockUp;
     }
 
     public String getName() {
@@ -36,5 +38,13 @@ public class User {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public int getAvatarMockUp() {
+        return avatarMockUp;
+    }
+
+    public void setAvatarMockUp(int avatarMockUp) {
+        this.avatarMockUp = avatarMockUp;
     }
 }
