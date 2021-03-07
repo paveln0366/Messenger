@@ -55,8 +55,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
         public UserViewHolder(@NonNull View itemView, OnUserClickListener listener) {
             super(itemView);
-            userAvatar = itemView.findViewById(R.id.userName);
-            userName = itemView.findViewById(R.id.userAvatar);
+            userAvatar = itemView.findViewById(R.id.userAvatarImageView);
+            userName = itemView.findViewById(R.id.userNameTextView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

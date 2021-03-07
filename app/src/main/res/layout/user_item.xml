@@ -10,14 +10,14 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/userAvatar"
+            android:id="@+id/userAvatarImageView"
             android:background="@drawable/user_avatar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_standard"/>
 
         <TextView
-            android:id="@+id/userName"
+            android:id="@+id/userNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="User name"
