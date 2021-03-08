@@ -1,16 +1,20 @@
 package com.pavelpotapov.messenger;
 
 public class Message {
-    String name;
-    String text;
-    String imageUrl;
+    private String name;
+    private String text;
+    private String sender;
+    private String recipient;
+    private String imageUrl;
 
     public Message() {
     }
 
-    public Message(String name, String text, String imageUrl) {
+    public Message(String name, String text, String sender, String recipient, String imageUrl) {
         this.name = name;
         this.text = text;
+        this.sender = sender;
+        this.recipient = recipient;
         this.imageUrl = imageUrl;
     }
 
@@ -28,6 +32,22 @@ public class Message {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
+    public String getRecipient() {
+        return recipient;
+    }
+
+    public void setRecipient(String recipient) {
+        this.recipient = recipient;
     }
 
     public String getImageUrl() {

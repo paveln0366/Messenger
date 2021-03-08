@@ -40,7 +40,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         } else {
             messageText.setVisibility(View.GONE);
             messageImage.setVisibility(View.VISIBLE);
-            Glide.with(messageImage.getContext()).load(message.imageUrl).into(messageImage);
+            Glide.with(messageImage.getContext()).load(message.getImageUrl()).into(messageImage);
         }
         messageName.setText(message.getName());
         return convertView;
