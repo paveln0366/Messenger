@@ -15,4 +15,5 @@
     <string name="enter_your_name">Enter your name</string>
     <string name="no_name">No name</string>
     <string name="select_an_image">Select an image</string>
+    <string name="chat_with">Chat with</string>
 </resources>

@@ -60,6 +60,7 @@ public class ChatActivity extends AppCompatActivity {
     private StorageReference storageRefImages;
 
     private String recipientUserId;
+    private String recipientUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +73,10 @@ public class ChatActivity extends AppCompatActivity {
         if (intent != null) {
             userName = intent.getStringExtra("userName");
             recipientUserId = intent.getStringExtra("recipientUserId");
-        } else {
-            userName = getString(R.string.no_name);
+            recipientUserName = intent.getStringExtra("recipientUserName");
         }
+
+        setTitle(getString(R.string.chat_with) + " " + recipientUserName);
 
         db = FirebaseDatabase.getInstance();
         dbRefMessages = db.getReference().child("messages");
@@ -180,9 +182,12 @@ public class ChatActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Message message = snapshot.getValue(Message.class);
                 if (message.getSender().equals(auth.getCurrentUser().getUid()) &&
-                        message.getRecipient().equals(recipientUserId) ||
-                        message.getRecipient().equals(auth.getCurrentUser().getUid()) &&
-                        message.getSender().equals(recipientUserId)) {
+                        message.getRecipient().equals(recipientUserId)) {
+                    message.setMy(true);
+                    adapter.add(message);
+                } else if (message.getRecipient().equals(auth.getCurrentUser().getUid()) &&
+                                message.getSender().equals(recipientUserId)) {
+                    message.setMy(false);
                     adapter.add(message);
                 }
             }

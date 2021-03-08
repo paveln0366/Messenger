@@ -2,6 +2,7 @@ package com.pavelpotapov.messenger;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -17,32 +18,79 @@ import java.util.List;
 
 public class MessageAdapter extends ArrayAdapter<Message> {
 
-    public MessageAdapter(@NonNull Context context, int resource, List<Message> messages) {
+    private List<Message> messages;
+    private Activity activity;
+
+    public MessageAdapter(@NonNull Activity context, int resource, List<Message> messages) {
         super(context, resource, messages);
+        this.messages = messages;
+        this.activity = context;
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        if (convertView == null) {
-            convertView = ((Activity) getContext()).getLayoutInflater().inflate(R.layout.message_item,
-                    parent, false);
-        }
-        ImageView messageImage = convertView.findViewById(R.id.messageImage);
-        TextView messageText = convertView.findViewById(R.id.messageText);
-        TextView messageName = convertView.findViewById(R.id.messageName);
+
+        ViewHolder viewHolder;
+        LayoutInflater layoutInflater = (LayoutInflater) activity.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+
         Message message = getItem(position);
+        int layoutResource = 0;
+        int viewType = getItemViewType(position);
+        if (viewType == 0) {
+            layoutResource = R.layout.my_message_item;
+        } else {
+            layoutResource = R.layout.you_message_item;
+        }
+
+        if (convertView != null) {
+            viewHolder = (ViewHolder) convertView.getTag();
+        } else {
+            convertView = layoutInflater.inflate(layoutResource, parent, false);
+            viewHolder = new ViewHolder(convertView);
+            convertView.setTag(viewHolder);
+        }
         boolean isText = message.getImageUrl() == null;
         if (isText) {
-            messageText.setVisibility(View.VISIBLE);
-            messageImage.setVisibility(View.GONE);
-            messageText.setText(message.getText());
+            viewHolder.messageName.setText(message.getName());
+            viewHolder.messageText.setVisibility(View.VISIBLE);
+            viewHolder.messageImage.setVisibility(View.GONE);
+            viewHolder.messageText.setText(message.getText());
         } else {
-            messageText.setVisibility(View.GONE);
-            messageImage.setVisibility(View.VISIBLE);
-            Glide.with(messageImage.getContext()).load(message.getImageUrl()).into(messageImage);
+            viewHolder.messageName.setText(message.getName());
+            viewHolder.messageText.setVisibility(View.GONE);
+            viewHolder.messageImage.setVisibility(View.VISIBLE);
+            Glide.with(viewHolder.messageImage.getContext()).load(message.getImageUrl()).into(viewHolder.messageImage);
         }
-        messageName.setText(message.getName());
         return convertView;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        int flag;
+        Message message = messages.get(position);
+        if (message.isMy()) {
+            flag = 0;
+        } else {
+            flag = 1;
+        }
+        return flag;
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 2;
+    }
+
+    private class ViewHolder {
+        private TextView messageName;
+        private TextView messageText;
+        private ImageView messageImage;
+
+        public ViewHolder(View view) {
+            messageName = view.findViewById(R.id.messageName);
+            messageText = view.findViewById(R.id.messageText);
+            messageImage = view.findViewById(R.id.messageImage);
+        }
     }
 }
